@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken')
 
 const PORT = process.env.PORT || 5000
 const JWT_SECRET = process.env.JWT
-if (!JWT_SECRET) throw new Error('JWT environment variable is required')
 
 const clientsByUser = new Map()
 const wsserv = new WebSocket.Server({
@@ -17,11 +16,11 @@ const wsserv = new WebSocket.Server({
             if (!token) throw new Error('Missing token')
 
             const payload = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] })
-            if (typeof payload.sub !== 'string' || payload.sub.length === 0) {
+            if (typeof payload.lobby !== 'string' || payload.lobby.length === 0) {
                 throw new Error('Token is missing a subject')
             }
 
-            info.req.userId = payload.sub
+            info.req.userId = payload.lobby
             callback(true)
         } catch {
             callback(false, 401, 'Unauthorized')
