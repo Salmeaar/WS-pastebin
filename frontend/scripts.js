@@ -1,20 +1,29 @@
-const socket = new WebSocket(`ws://localhost:5000`)
+const token = new URLSearchParams(window.location.search).get('token')
+const socket = token
+    ? new WebSocket(`ws://localhost:5000/?token=${encodeURIComponent(token)}`)
+    : null
+const input = document.querySelector('#input')
+const output = document.querySelector('#output')
 
-socket.onopen = function (event) {
-    console.log('Successfully connected')
+if (socket) {
+    socket.onopen = function () {
+        console.log('Successfully connected')
+    }
+
+    socket.onmessage = function (event) {
+        const data = JSON.parse(event.data)
+        output.textContent = data.msg
+    }
+
+    socket.onclose = function () {
+        console.log('Disconnected')
+    }
+} else {
+    output.textContent = 'JWT missing from URL (?token=...)'
 }
 
-socket.onmessage = function (event) {
-    const data = JSON.parse(event.data)
-    document.querySelector('#output').innerHTML = data.msg
-
-
-}
-
-socket.onclose = function (event) {
-    console.log('Disconnected')
-}
-
-document.querySelector('#input').addEventListener('input', (evt) => {
-    socket.send(evt.target.value)
+input.addEventListener('input', (event) => {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(event.target.value)
+    }
 })
