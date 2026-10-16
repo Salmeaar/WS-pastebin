@@ -9,7 +9,7 @@ const clientsByUser = new Map()
 const wsserv = new WebSocket.Server({
     port: PORT,
     verifyClient(info, callback) {
-        const url = new URL(info.req.url, 'http://localhost')
+        const url = new URL(info.req.url)
         const token = url.searchParams.get('token')
 
         try {
