@@ -1,6 +1,6 @@
 const token = new URLSearchParams(window.location.search).get('token')
 const socket = token
-    ? new WebSocket(`ws://https://ws-pastebin.onrender.com?token=${encodeURIComponent(token)}`)
+    ? new WebSocket(`https://ws-pastebin.onrender.com?token=${encodeURIComponent(token)}`)
     : null
 const input = document.querySelector('#input')
 const output = document.querySelector('#output')
