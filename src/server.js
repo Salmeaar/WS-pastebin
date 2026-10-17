@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000
 const JWT_SECRET = process.env.JWT
 
 const clientsByUser = new Map()
-const wsserv = new WebSocket.Server({server,port: PORT,path:'/'})
+const wsserv = new WebSocket.Server({server,path:'/'})
 
 wsserv.on('connection', (ws, req) => {
     const url = new URLSearchParams(req.url.slice(1))
@@ -57,4 +57,8 @@ wsserv.on('connection', (ws, req) => {
         console.log('Connection closed')
     })
 
+})
+
+server.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`)
 })
