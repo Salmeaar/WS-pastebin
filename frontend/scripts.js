@@ -1,7 +1,6 @@
 const token = new URLSearchParams(window.location.search).get('token')
-const socket = token
-    ? new WebSocket(`wss://ws-pastebin.onrender.com?token=${encodeURIComponent(token)}`)
-    : null
+const socket = new WebSocket(`wss://ws-pastebin.onrender.com?token=${encodeURIComponent(token)}`)
+    
 const input = document.querySelector('#input')
 const output = document.querySelector('#output')
 
@@ -15,6 +14,12 @@ if (socket) {
         output.textContent = data.msg
     }
 
+    input.addEventListener('input', (event) => {
+        if (socket && socket.readyState === WebSocket.OPEN) {
+            socket.send(event.target.value)
+        }
+    })
+
     socket.onclose = function () {
         console.log('Disconnected')
     }
@@ -22,8 +27,3 @@ if (socket) {
     output.textContent = 'JWT missing from URL (?token=...)'
 }
 
-input.addEventListener('input', (event) => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-        socket.send(event.target.value)
-    }
-})

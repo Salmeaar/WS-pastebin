@@ -2,11 +2,17 @@ const WebSocket = require('ws')
 require('dotenv').config()
 const jwt = require('jsonwebtoken')
 
+const express = require('express')
+const { createServer } = require('http')
+const WebSocket = require('ws')
+const app = express()
+const server = createServer(app)
+
 const PORT = process.env.PORT || 5000
 const JWT_SECRET = process.env.JWT
 
 const clientsByUser = new Map()
-const wsserv = new WebSocket.Server({port: PORT})
+const wsserv = new WebSocket.Server({server,port: PORT,path:'/'})
 
 wsserv.on('connection', (ws, req) => {
     const url = new URLSearchParams(req.url.slice(1))
