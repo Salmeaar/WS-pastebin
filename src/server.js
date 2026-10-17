@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken')
 
 const express = require('express')
 const { createServer } = require('http')
-const WebSocket = require('ws')
 const app = express()
 const server = createServer(app)
 
