@@ -21,6 +21,8 @@ const wsserv = new WebSocket.Server({
 
 // Verify JWT before accepting connection
 server.on('upgrade', (req, socket, head) => {
+    console.log("WebSocket upgrade received");
+    
     const url = new URL(req.url, 'http://localhost')
     const token = url.searchParams.get('token')
 
